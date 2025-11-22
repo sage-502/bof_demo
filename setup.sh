@@ -2,6 +2,20 @@
 
 echo "[*] BOF 시연 환경 설정 시작..."
 
+# 0. 32bit 아키텍처 추가 + multilib 설치
+echo "[*] 32bit 개발 환경 확인 중..."
+if ! dpkg --print-foreign-architectures | grep -q i386; then
+    echo "[*] i386 아키텍처 추가..."
+    sudo dpkg --add-architecture i386
+    sudo apt update
+fi
+
+echo "[*] 필수 패키지 설치 중..."
+sudo apt install -y libc6:i386 gcc-multilib gdb-multiarch
+
+echo "[+] 32bit 개발 환경 준비 완료"
+
+
 # 1. 디렉토리 생성
 TARGET_DIR="/tmp/bof_example"
 echo "[*] 디렉토리 생성: $TARGET_DIR"
@@ -36,8 +50,4 @@ sudo chmod 2755 bof
 sudo chmod 644 bof.c
 sudo chmod 640 flag
 
-echo "[+] BOF 시연 환경 설정 완료!"
-echo "[+] 다음 단계:"
-echo "    su baby"
-echo "    cd /tmp/bof_example"
-echo "    ( python3 -c 'import sys; sys.stdout.buffer.write(b\"A\"*offset + b\"<addr>\")'; cat ) | ./bof"
+echo "[+] BOF 시연 환경 설정 완료"
