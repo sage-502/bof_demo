@@ -24,7 +24,7 @@ cd $TARGET_DIR || exit 1
 
 # 2. 소스코드 복사
 echo "[*] bof.c 복사..."
-cp "./bof.c" "$TARGET_DIR" || { echo "bof.c 복사 실패"; exit 1; }
+cp "bof.c" "$TARGET_DIR" || { echo "bof.c 복사 실패"; exit 1; }
 
 # 3. 컴파일
 echo "[*] 컴파일 중..."
