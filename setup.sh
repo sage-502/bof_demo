@@ -15,16 +15,17 @@ sudo apt install -y libc6:i386 gcc-multilib gdb-multiarch
 
 echo "[+] 32bit 개발 환경 준비 완료"
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+TARGET_DIR="/tmp/bof_example"
 
 # 1. 디렉토리 생성
-TARGET_DIR="/tmp/bof_example"
 echo "[*] 디렉토리 생성: $TARGET_DIR"
 mkdir -p $TARGET_DIR
 cd $TARGET_DIR || exit 1
 
 # 2. 소스코드 복사
 echo "[*] bof.c 복사..."
-cp "bof.c" "$TARGET_DIR" || { echo "bof.c 복사 실패"; exit 1; }
+cp "$SCRIPT_DIR/bof.c" "$TARGET_DIR" || { echo "bof.c 복사 실패"; exit 1; }
 
 # 3. 컴파일
 echo "[*] 컴파일 중..."
