@@ -52,3 +52,6 @@ sudo chmod 644 bof.c
 sudo chmod 640 flag
 
 echo "[+] BOF 시연 환경 설정 완료"
+echo "[+] 다음 단계"
+echo "    su baby"
+echo "    cd /tmp/bof_example"
