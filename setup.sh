@@ -23,8 +23,9 @@ mkdir -p $TARGET_DIR
 cd $TARGET_DIR || exit 1
 
 # 2. 소스코드 복사
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 echo "[*] bof.c 복사..."
-cp "$(dirname "$0")/bof.c" . || { echo "bof.c 복사 실패"; exit 1; }
+cp "$SCRIPT_DIR/bof.c" "$TARGET_DIR" || { echo "bof.c 복사 실패"; exit 1; }
 
 # 3. 컴파일
 echo "[*] 컴파일 중..."
