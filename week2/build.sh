@@ -11,7 +11,7 @@ echo "[+] 컴파일 완료: $BINARY"
 
 echo "[*] 2. 바이너리 권한 설정 (setuid root)"
 sudo chown root:root "$BINARY"
-sudo chmod 4755 "$BINARY"
+sudo chmod 6755 "$BINARY"
 echo "[+] 권한 설정 완료 ($(ls -l $BINARY))"
 
 echo "[*] 3. 루트 소유 flag 파일 생성"
