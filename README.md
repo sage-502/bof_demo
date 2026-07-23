@@ -1,40 +1,61 @@
-# BOF ret2win Demo Environment
+# 실습 자료
 
-mitigation이 없는 간단한 32bit BOF+ret2win 실습 환경.
+## 구성
 
-* [pwnable-intro](https://github.com/sage-502/pwnable-intro)의 시연용 보조자료로 제작됨.
-* YB가 따라하기 쉽도록 `setup.sh` 실행만 하면 끝.
-* Ubuntu 24.04에서 테스트함.
+```
+pwn-intro-prac
+├── LICENSE
+├── README.md
+├── setup.sh
+├── week1
+│   └── stack.c
+└── week2
+    ├── bof.c
+    └── build.sh
+```
+
+## 시작하기
+
+```bash
+git clone https://github.com/sage-502/pwn-intro-prac
+cd pwn-intro-prac
+sudo bash setup.sh
+```
+
+`setup.sh`는 실습에 필요한 gcc, gdb, pwntools 등 툴을 한 번에 설치함.
 
 ---
 
-## 기능
-
-* 32bit 환경 추가
-* 패키지 설치 : libc6:i386, gcc-multlib, gdb-multlib
-* 실습 환경 세팅
-
-#### 환경 세팅 과정
-
-1. `/tmp`에 실습 디렉터리 생성
-2. 디렉터리에 소스코드 복사 : `bof.c`
-3. 빌드 : `bof`
-4. flag 생성
-5. 최소 권한 사용자 생성 : baby
-6. 권한 설정
-
-## 설치 방법
+## week1: 스택 프레임 실습
 
 ```bash
-git clone https://github.com/sage-502/bof_demo
-cd bof_demo
-bash setup.sh
+cd week1
+gcc -g -m32 -fno-stack-protector -no-pie -z execstack -o stack stack.c
+gdb ./stack
 ```
 
-## 사용
-``` bash
-su baby
-cd /tmp/bof_example
-# 분석
-( python3 -c 'import sys; sys.stdout.buffer.write(b"A"*<offset> + b"<target addr>")'; cat ) | ./bof
+컴파일 옵션은 `stack.c` 파일 상단 주석에도 적혀있음
+
+---
+
+## week2: Buffer Overflow (ret2win)
+
+```bash
+cd week2
+bash build.sh
+./bof
+```
+> `build.sh`는 취약한 바이너리를 컴파일하고, setuid/setgid 권한을 설정하고, `flag` 파일을 생성함.
+> `flag` 파일은 익스플로잇에 성공해야 읽을 수 있음 (직접 `cat flag`로는 안 열림)
+
+### Exploit 작성
+
+`payload.py`에서 `offset`, `overwrite` 값을 직접 채워서 익스플로잇 payload를 완성하기.
+
+디버깅은 이렇게:
+```bash
+python3 payload.py > payload.bin
+xxd payload.bin
+gdb ./bof
+(gdb) run < payload.bin
 ```
